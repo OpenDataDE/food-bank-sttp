@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * Created by aaronlong on 6/27/17.
  */
@@ -28,8 +30,8 @@ public class UsersController {
     return new ResponseEntity<String>("Hello World", HttpStatus.OK);
   }
 
-  @RequestMapping(method = RequestMethod.PUT)
-  public ResponseEntity<?> addUser(@RequestBody String s) {
+  @RequestMapping(method = RequestMethod.POST)
+  public ResponseEntity<?> addUser(@RequestBody Map<String, String> s) {
 
     return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
   }
