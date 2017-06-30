@@ -2,6 +2,7 @@ package com.opendatadelaware.feede.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opendatadelaware.feede.dao.UsersDao;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +18,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,6 +32,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -35,7 +40,7 @@ import java.util.Map;
  */
 @RunWith(SpringRunner.class)
 public class TestUserController {
-  private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+  private static final Logger LOGGER = LoggerFactory.getLogger(TestUserController.class);
 
   private MockMvc mvc;
 
@@ -51,18 +56,31 @@ public class TestUserController {
     mvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
+  static Optional<String> jsonFileToBase64String(String fileName) {
+    try {
+      URL inputFile = TestUserController.class.getResource(fileName);
+      byte[] jsonData = Files.readAllBytes(Paths.get(inputFile.toURI()));
+      return Optional.<String>of(Base64.getEncoder().encodeToString(jsonData));
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage());
+      return Optional.empty();
+    }
+  }
+
   @Test
   // Needs to handle the exception
-  public void testPutBadInput() throws Exception {
+  public void testPostBadInput() throws Exception {
     //String badAuth = "eyIiOiIiLCJoZXkiOiJ3aGF0c3VwIiwibm8iOiJwcm9mYW5pdHkiLCJkZW5uaXMiOiJtYXJpb2thcnRtYXN0ZXIifQ==";
-    URL inputFile = TestUserController.class.getResource("/json/BadUserInput.json");
-    byte[] jsonData = Files.readAllBytes(Paths.get(inputFile.toURI()));
-    String badAuth = Base64.getEncoder().encodeToString(jsonData);
-    Map<String, String> badInput = Collections.singletonMap("auth", badAuth);
-    String badAuthBody = new ObjectMapper().writeValueAsString(badInput);
-    this.mvc.perform(post("/api/user")
-            .contentType(MediaType.APPLICATION_JSON).content(badAuthBody))
+    Optional<String> badAuth = jsonFileToBase64String("/json/BadUserInput.json");
+    if (badAuth.isPresent()) {
+      Map<String, String> badInput = Collections.singletonMap("auth", badAuth.get());
+      String badAuthBody = new ObjectMapper().writeValueAsString(badInput);
+      this.mvc.perform(post("/api/user")
+                               .contentType(MediaType.APPLICATION_JSON).content(badAuthBody))
               .andExpect(status().isBadRequest());
+    } else {
+      Assert.fail("File not available");
+    }
   }
 
 //  @Test
