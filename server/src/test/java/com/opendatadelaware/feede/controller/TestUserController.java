@@ -1,6 +1,5 @@
 package com.opendatadelaware.feede.controller;
 
-import ch.qos.logback.classic.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opendatadelaware.feede.dao.UsersDao;
 import org.junit.Before;
@@ -8,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 @RunWith(SpringRunner.class)
 public class TestUserController {
-  //private static Logger LOGGER = Logger.getLogger(TestUserController.class.getName());
+  private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
   private MockMvc mvc;
 
@@ -45,7 +46,6 @@ public class TestUserController {
 
   @Before
   public void init() {
-    LoggingSystem.get(ClassLoader.getSystemClassLoader()).setLogLevel(Logger.ROOT_LOGGER_NAME, LogLevel.ERROR);
     MockitoAnnotations.initMocks(this);
     mvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
@@ -59,7 +59,7 @@ public class TestUserController {
     byte[] jsonData = Files.readAllBytes(Paths.get(inputFile.toURI()));
     Base64.Encoder decoder = Base64.getEncoder();
     String mapData = decoder.encodeToString(jsonData);
-    System.out.println(String.format("\n%s\n", mapData));
+    LOGGER.warn(mapData);
 //    Map<String,String> objectMap = new HashMap<String, String>();
 //    ObjectMapper objectMapper = new ObjectMapper();
 //    objectMap = objectMapper.readValue(mapData, HashMap.class);
