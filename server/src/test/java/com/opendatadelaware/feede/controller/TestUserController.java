@@ -25,6 +25,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,16 +56,13 @@ public class TestUserController {
   public void testPutBadInput() throws Exception {
     //String badAuth = "eyIiOiIiLCJoZXkiOiJ3aGF0c3VwIiwibm8iOiJwcm9mYW5pdHkiLCJkZW5uaXMiOiJtYXJpb2thcnRtYXN0ZXIifQ==";
     URL inputFile = TestUserController.class.getResource("/json/BadUserInput.json");
-    //Map<String, String> badInput = Collections.singletonMap("auth", badAuth);
     byte[] jsonData = Files.readAllBytes(Paths.get(inputFile.toURI()));
-    Base64.Encoder decoder = Base64.getEncoder();
-    String mapData = decoder.encodeToString(jsonData);
-//    Map<String,String> objectMap = new HashMap<String, String>();
-//    ObjectMapper objectMapper = new ObjectMapper();
-//    objectMap = objectMapper.readValue(mapData, HashMap.class);
-//    this.mvc.perform(post("/api/user")
-//            .contentType(MediaType.APPLICATION_JSON).content(badInput.get("auth")))
-//              .andExpect(status().isBadRequest());
+    String badAuth = Base64.getEncoder().encodeToString(jsonData);
+    Map<String, String> badInput = Collections.singletonMap("auth", badAuth);
+    String badAuthBody = new ObjectMapper().writeValueAsString(badInput);
+    this.mvc.perform(post("/api/user")
+            .contentType(MediaType.APPLICATION_JSON).content(badAuthBody))
+              .andExpect(status().isBadRequest());
   }
 
 //  @Test
