@@ -51,15 +51,14 @@ public class TestUserController {
   }
 
   @Test
+  // Needs to handle the exception
   public void testPutBadInput() throws Exception {
     //String badAuth = "eyIiOiIiLCJoZXkiOiJ3aGF0c3VwIiwibm8iOiJwcm9mYW5pdHkiLCJkZW5uaXMiOiJtYXJpb2thcnRtYXN0ZXIifQ==";
-    URL inputFile = TestUserController.class.getResource("/GoodInputJson.json");
-    //LOGGER.info(inputFile.toString());
+    URL inputFile = TestUserController.class.getResource("/json/BadUserInput.json");
     //Map<String, String> badInput = Collections.singletonMap("auth", badAuth);
     byte[] jsonData = Files.readAllBytes(Paths.get(inputFile.toURI()));
     Base64.Encoder decoder = Base64.getEncoder();
     String mapData = decoder.encodeToString(jsonData);
-    LOGGER.warn(mapData);
 //    Map<String,String> objectMap = new HashMap<String, String>();
 //    ObjectMapper objectMapper = new ObjectMapper();
 //    objectMap = objectMapper.readValue(mapData, HashMap.class);
