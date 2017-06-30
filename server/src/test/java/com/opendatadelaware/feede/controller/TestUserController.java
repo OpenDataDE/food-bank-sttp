@@ -83,7 +83,7 @@ public class TestUserController {
   }
 
   @Test
-  public void testPutValidInput() throws Exception {
+  public void testPostValidInput() throws Exception {
       Optional<String> goodAuth = jsonFileToBase64String("/json/GoodUserInput.json");
       if (goodAuth.isPresent()) {
         Map<String, String> map = Collections.singletonMap("auth", goodAuth.get());
