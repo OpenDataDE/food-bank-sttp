@@ -70,7 +70,6 @@ public class TestUserController {
   @Test
   // Needs to handle the exception
   public void testPostBadInput() throws Exception {
-    //String badAuth = "eyIiOiIiLCJoZXkiOiJ3aGF0c3VwIiwibm8iOiJwcm9mYW5pdHkiLCJkZW5uaXMiOiJtYXJpb2thcnRtYXN0ZXIifQ==";
     Optional<String> badAuth = jsonFileToBase64String("/json/BadUserInput.json");
     if (badAuth.isPresent()) {
       Map<String, String> badInput = Collections.singletonMap("auth", badAuth.get());
@@ -83,16 +82,17 @@ public class TestUserController {
     }
   }
 
-//  @Test
-//  public void testPutValidInput() throws Exception {
-//      byte[] jsonAsBytes = Files.readAllBytes(Paths.get("GoodInputJson.json"));
-//      String jsonAsString = new String(jsonAsBytes);
-//      //String validAuth = "eyJmaXJzdE5hbWUiOiJEZW5uaXMiLCJsYXN0TmFtZSI6IkthbGF5Z2lhbiIsImVtYWlsIjoiZGVubmlza2FsYXlnaWFuQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDUiLCJwaG9uZSI6IjMwMjMzMzMzMzMiLCJzdHJlZXQiOiI4MTEgQmlyY2ggQXZlIiwiY2l0eSI6Ik1pbGZvcmQiLCJzdGF0ZSI6IkRFIiwiemlwIjoiMTk5NjMifQ==";
-//      ObjectMapper objectMapper = new ObjectMapper();
-//      TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String,String>>() {};
-//      Map<String, String> user = objectMapper.readValues(jsonAsString, new HashMap<String,String>());//typeRef);
-//      //String jsonValue = o
-//
-//
-//  }
+  @Test
+  public void testPutValidInput() throws Exception {
+      Optional<String> goodAuth = jsonFileToBase64String("/json/GoodUserInput.json");
+      if (goodAuth.isPresent()) {
+        Map<String, String> map = Collections.singletonMap("auth", goodAuth.get());
+        String goodAuthJsonBody = new ObjectMapper().writeValueAsString(map);
+        this.mvc.perform(post("/api/user")
+                                 .contentType(MediaType.APPLICATION_JSON).content(goodAuthJsonBody))
+                .andExpect(status().isBadRequest());
+      } else {
+        Assert.fail();
+      }
+  }
 }
