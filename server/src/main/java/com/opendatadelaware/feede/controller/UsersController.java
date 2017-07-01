@@ -1,6 +1,7 @@
 package com.opendatadelaware.feede.controller;
 
 import com.opendatadelaware.feede.service.UsersService;
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,11 @@ public class UsersController {
   }
 
   @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<?> addUser(@RequestBody Map<String, String> s) {
-
+  public ResponseEntity<?> addUser(@RequestBody Map<String, String> userSubmission) {
+    if (userSubmission.containsKey("auth")) {
+        byte[] jsonRepresentation = Base64.decode(userSubmission.get("auth"));
+        return new ResponseEntity<>(jsonRepresentation, HttpStatus.BAD_REQUEST);
+    }
     return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
   }
 

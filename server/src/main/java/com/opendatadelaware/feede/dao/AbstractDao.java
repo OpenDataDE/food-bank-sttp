@@ -15,7 +15,7 @@ public abstract class AbstractDao<E extends Serializable, PK extends Serializabl
 
   private Class<E> type;
 
-  protected void setDaoClass (Class<E> daoType) {
+  public AbstractDao (Class<E> daoType) {
     type = daoType;
   }
 
