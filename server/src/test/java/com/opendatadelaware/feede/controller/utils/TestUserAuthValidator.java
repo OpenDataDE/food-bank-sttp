@@ -115,8 +115,8 @@ public class TestUserAuthValidator {
     @Test
     public void testValidPhoneNumberTenDigits() {
         UserAuthValidator user = new UserAuthValidator().setFirstName("Jane").setLastName("Doe")
-                .setEmail("johnDoe").setPassword("12345").setPhone("(302)-383-3333")
-                .setState("111 This Street").setCity("Milford").setState("DE")
+                .setEmail("johnDoe@gmail.com").setPassword("12345").setPhone("(302)-383-3333")
+                .setStreet("111 This Street").setCity("Milford").setState("DE")
                 .setZip("19963").setType("Farm");
         Assert.assertTrue("Checking to see if the phone number is ruled as valid", user.isValid());
     }

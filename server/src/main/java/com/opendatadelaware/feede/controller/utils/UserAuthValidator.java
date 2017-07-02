@@ -1,6 +1,8 @@
 package com.opendatadelaware.feede.controller.utils;
 
 import org.hibernate.validator.constraints.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -15,6 +17,7 @@ import java.util.Set;
  */
 
 public class UserAuthValidator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthValidator.class);
     private static Validator validator;
 
     static {
@@ -56,7 +59,11 @@ public class UserAuthValidator {
     public UserAuthValidator() {}
 
     public boolean isValid() {
-      return validator.validate(this).size() == 1;
+      LOGGER.info(this.phone + " " + validator.validate(this).size());
+      for (ConstraintViolation v :validator.validate(this)) {
+        LOGGER.info(v.getMessage());
+      }
+      return validator.validate(this).size() == 0;
     }
 
     public String getFirstName() {
