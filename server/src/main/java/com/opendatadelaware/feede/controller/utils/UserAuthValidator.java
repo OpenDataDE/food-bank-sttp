@@ -1,27 +1,21 @@
 package com.opendatadelaware.feede.controller.utils;
 
 import org.hibernate.validator.constraints.Email;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.util.Set;
 
 /**
  * Created by denniskalaygian on 6/30/17.
  */
 
 public class UserAuthValidator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthValidator.class);
-    private static Validator validator;
+    private static final Validator VALIDATOR;
 
     static {
-      validator = Validation.buildDefaultValidatorFactory().getValidator();
+      VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @NotNull(message="First name cannot be null")
@@ -59,11 +53,7 @@ public class UserAuthValidator {
     public UserAuthValidator() {}
 
     public boolean isValid() {
-      LOGGER.info(this.phone + " " + validator.validate(this).size());
-      for (ConstraintViolation v :validator.validate(this)) {
-        LOGGER.info(v.getMessage());
-      }
-      return validator.validate(this).size() == 0;
+      return VALIDATOR.validate(this).size() == 0;
     }
 
     public String getFirstName() {
