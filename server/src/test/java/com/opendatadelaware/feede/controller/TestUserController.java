@@ -2,6 +2,7 @@ package com.opendatadelaware.feede.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opendatadelaware.feede.dao.UsersDao;
+import com.opendatadelaware.feede.service.UsersService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,6 +48,9 @@ public class TestUserController {
 
   @MockBean
   private UsersDao dao;
+
+  @SpyBean
+  private UsersService usersService;
 
   @InjectMocks
   private UsersController controller;
@@ -90,7 +95,7 @@ public class TestUserController {
         String goodAuthJsonBody = new ObjectMapper().writeValueAsString(map);
         this.mvc.perform(post("/api/user")
                                  .contentType(MediaType.APPLICATION_JSON).content(goodAuthJsonBody))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isCreated());
       } else {
         Assert.fail();
       }
