@@ -43,24 +43,27 @@ public class Items implements Serializable {
     return category;
   }
 
-  public void setCategory(String category) {
+  public Items setCategory(String category) {
     this.category = category;
+    return this;
   }
 
   public String getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
+  public Items setDescription(String description) {
     this.description = description;
+    return this;
   }
 
   public Double getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(Double quantity) {
+  public Items setQuantity(Double quantity) {
     this.quantity = quantity;
+    return this;
   }
 
   public Orders getOrderNumber() {
@@ -71,12 +74,13 @@ public class Items implements Serializable {
     this.orderNumber = orderNumber;
   }
 
-  public UUID getUuid() {
+  public UUID getUUID() {
     return uuid;
   }
 
-  public void setUuid(UUID uuid) {
+  public Items setUUID(UUID uuid) {
     this.uuid = uuid;
+    return this;
   }
 
 

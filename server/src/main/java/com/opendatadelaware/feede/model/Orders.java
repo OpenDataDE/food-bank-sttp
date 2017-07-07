@@ -38,19 +38,26 @@ public class Orders implements Serializable {
 
   public UUID getUUID() { return uuid; }
 
+  public Orders setUUID(UUID uuid) {
+    this.uuid = uuid;
+    return this;
+  }
+
   public Date getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(Date dateTime) {
+  public Orders setDateTime(Date dateTime) {
     this.dateTime = dateTime;
+    return this;
   }
 
   public Users getUser() {
     return user;
   }
 
-  public void setUser(Users user) {
+  public Orders setUser(Users user) {
     this.user = user;
+    return this;
   }
 }

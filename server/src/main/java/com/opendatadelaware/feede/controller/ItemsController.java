@@ -49,7 +49,7 @@ public class ItemsController {
         URI newItemsURI = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{uuid}")
-                .buildAndExpand(items.getUuid())
+                .buildAndExpand(items.getUUID())
                 .toUri();
         responseHeaders.setLocation(newItemsURI);
         return new Success().makeResponse(HttpStatus.CREATED);

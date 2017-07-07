@@ -42,12 +42,12 @@ public class OrdersController {
                 .buildAndExpand(order.getUUID())
                 .toUri();
         responseHeaders.setLocation(newOrderURI);
-        return new ResponseEntity<Orders>(HttpStatus.CREATED);
+        return new ResponseEntity<Orders>(responseHeaders, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{uuid}/", method = RequestMethod.GET)
     public ResponseEntity<?> getOrderByID(@PathVariable UUID uuid) {
-        return new ResponseEntity<>(dao.read(uuid), HttpStatus.OK);
+        return new ResponseEntity<>(dao.getById(uuid), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{uuid}/", method = RequestMethod.DELETE)
